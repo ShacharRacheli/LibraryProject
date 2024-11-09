@@ -19,7 +19,7 @@ namespace WebApplication1.Controllers
 
         // GET api/<SubscriberController>/5
         [HttpGet("{id}")]
-        public IActionResult Get([FromQuery]string id)
+        public ActionResult Get([FromQuery]string id)
         {
             Subscribe subs = Data.SubscribeList.FirstOrDefault(sub => sub.ID == id);
             if (subs != null)
