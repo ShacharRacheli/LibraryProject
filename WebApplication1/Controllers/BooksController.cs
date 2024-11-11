@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication1.module;
 using WebApplication1.Helper;
+using Library.Interface;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApplication1.Controllers
@@ -10,20 +11,23 @@ namespace WebApplication1.Controllers
 
     public class BooksController : ControllerBase
     {
-        public BooksController()
-        { 
+        private readonly IDataContext _context;
+
+        public BooksController(IDataContext dataContext)
+        {
+            _context = dataContext;
         }
 
         // GET: api/<BooksController>
         [HttpGet]
         public IEnumerable<Books> Get()
         {
-            return Data.BookList;
+            return _context.BookList;
         }
         [HttpGet("GetByCode")]
-        public IActionResult Get([FromQuery] int code)
+        public ActionResult Get([FromQuery] int code)
         {
-            Books book = Data.BookList.FirstOrDefault(book => book.Code == code);
+            Books book = _context.BookList.FirstOrDefault(book => book.Code == code);
             if (book != null)
                 return Ok(book);
             return NotFound();
@@ -33,7 +37,7 @@ namespace WebApplication1.Controllers
         //  [HttpGet("{category}/{code}/{isBorrowed}")]
         public IEnumerable<Books> Get([FromQuery] ECategories category)
         {
-            return Data.BookList.Where(book=>book.Category==category).ToList();
+            return _context.BookList.Where(book=>book.Category==category).ToList();
         }
         
 
@@ -41,14 +45,14 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public void Post([FromBody] Books book)
         {
-            Data.BookList.Add(book);
+            _context.BookList.Add(book);
         }
 
         // PUT api/<BooksController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Books book)
         {
-            Books temp = Data.BookList.FirstOrDefault(book => book.Code == id);
+            Books temp = _context.BookList.FirstOrDefault(book => book.Code == id);
             if (temp != null)
             {
                 temp.Author=book.Author;
@@ -68,9 +72,9 @@ namespace WebApplication1.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            Books b = Data.BookList.FirstOrDefault(book => book.Code == id);
+            Books b = _context.BookList.FirstOrDefault(book => book.Code == id);
             if (b != null)
-                Data.BookList.Remove(b);         
+                _context.BookList.Remove(b);         
         }
     }
 }

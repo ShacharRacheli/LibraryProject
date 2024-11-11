@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Library.Interface;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Helper;
 using WebApplication1.module;
@@ -10,18 +11,25 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class SubscriberController : ControllerBase
     {
+        private readonly IDataContext _context;
+
+        public SubscriberController(IDataContext context)
+        {
+            _context = context;
+        }
+
         // GET: api/<SubscriberController>
         [HttpGet]
         public IEnumerable<Subscribe> Get()
         {
-            return Data.SubscribeList;
+            return _context.SubscribeList;
         }
 
         // GET api/<SubscriberController>/5
         [HttpGet("{id}")]
         public ActionResult Get([FromQuery]string id)
         {
-            Subscribe subs = Data.SubscribeList.FirstOrDefault(sub => sub.ID == id);
+            Subscribe subs = _context.SubscribeList.FirstOrDefault(sub => sub.ID == id);
             if (subs != null)
             {
                 return Ok(subs);
@@ -31,20 +39,20 @@ namespace WebApplication1.Controllers
         [HttpGet("ListIsActive")]
         public IEnumerable<Subscribe> Get([FromQuery]bool isActive)
         {
-            return Data.SubscribeList.Where(sub => sub.IsActive==isActive).ToList();
+            return _context.SubscribeList.Where(sub => sub.IsActive==isActive).ToList();
         }
         // POST api/<SubscriberController>
         [HttpPost]
         public void Post([FromBody] Subscribe value)
         {
-            Data.SubscribeList.Add(value);
+            _context.SubscribeList.Add(value);
         }
 
         // PUT api/<SubscriberController>/5
         [HttpPut("{id}")]
         public void Put(string id, [FromBody] Subscribe value)
         {
-            Subscribe temp =Data.SubscribeList.FirstOrDefault(sub=>sub.ID==id);
+            Subscribe temp = _context.SubscribeList.FirstOrDefault(sub=>sub.ID==id);
             if (temp != null) { 
                 temp.Name = value.Name;
                 temp.IsActive = value.IsActive;
@@ -61,9 +69,9 @@ namespace WebApplication1.Controllers
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
-            Subscribe s = Data.SubscribeList.FirstOrDefault(sub => sub.ID == id);
+            Subscribe s = _context.SubscribeList.FirstOrDefault(sub => sub.ID == id);
             if (s!=null)
-            Data.SubscribeList.Remove(s);
+            _context.SubscribeList.Remove(s);
         }
     }
 }

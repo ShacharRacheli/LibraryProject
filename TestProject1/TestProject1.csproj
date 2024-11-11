@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LibraryCore\LibraryCore.csproj" />
     <ProjectReference Include="..\WebApplication1\Library.csproj" />
   </ItemGroup>
 
