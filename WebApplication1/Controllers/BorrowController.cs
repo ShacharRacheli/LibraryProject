@@ -1,10 +1,10 @@
-﻿using Library.Interface;
+﻿using Library.Core.Interface;
+using Library.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Helper;
-using WebApplication1.module;
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace WebApplication1.Controllers
+namespace Library.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -22,27 +22,27 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IEnumerable<Borrow> Get()
         {
-            return _context.Borrows ;
+            return _context.Borrows;
         }
 
         // GET api/<BorrowController>/5
         [HttpGet("SameBook")]
         public IEnumerable<Borrow> Get([FromQuery] int code)
         {
-            return _context.Borrows.Where(bo=>bo.Book.Code==code).ToList();
+            return _context.Borrows.Where(bo => bo.Book.Code == code).ToList();
         }
         [HttpGet("SameSubscriber")]
-        public IEnumerable<Borrow> Get([FromQuery]string id)
+        public IEnumerable<Borrow> Get([FromQuery] string id)
         {
-            return _context.Borrows.Where(bo => bo.Subscriber.ID==id).ToList();
+            return _context.Borrows.Where(bo => bo.Subscriber.ID == id).ToList();
         }
         // POST api/<BorrowController>
         [HttpPost]
-        public void Post([FromQuery] int codeBook, [FromQuery]string idSubscriber)
+        public void Post([FromQuery] int codeBook, [FromQuery] string idSubscriber)
         {
-          Books b= _context.BookList.FirstOrDefault(book => book.Code == codeBook);
-          Subscribe s= _context.SubscribeList.FirstOrDefault(sub=>sub.ID==idSubscriber);
-            if (s != null&&b!=null)
+            Books b = _context.BookList.FirstOrDefault(book => book.Code == codeBook);
+            Subscribe s = _context.SubscribeList.FirstOrDefault(sub => sub.ID == idSubscriber);
+            if (s != null && b != null)
             {
                 if (b.IsBorrowed == false)
                 {
@@ -64,10 +64,11 @@ namespace WebApplication1.Controllers
         public void Put(int id)
         {
             Borrow borrow = _context.Borrows.FirstOrDefault(brw => brw.Id == id);
-            if (borrow != null) {         
-                borrow.EndDate=DateTime.Today;
+            if (borrow != null)
+            {
+                borrow.EndDate = DateTime.Today;
                 borrow.IsReturned = true;
-                borrow.Book.IsBorrowed=false;
+                borrow.Book.IsBorrowed = false;
             }
         }
         //[HttpPut("changeStatus {id}")]

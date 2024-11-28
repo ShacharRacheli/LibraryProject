@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebApplication1.module;
-using WebApplication1.Helper;
-using Library.Interface;
+﻿using Library.Core.Interface;
+using Library.Core.Models;
+using Microsoft.AspNetCore.Mvc;
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace WebApplication1.Controllers
+namespace Library.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -37,9 +37,9 @@ namespace WebApplication1.Controllers
         //  [HttpGet("{category}/{code}/{isBorrowed}")]
         public IEnumerable<Books> Get([FromQuery] ECategories category)
         {
-            return _context.BookList.Where(book=>book.Category==category).ToList();
+            return _context.BookList.Where(book => book.Category == category).ToList();
         }
-        
+
 
         // POST api/<BooksController>
         [HttpPost]
@@ -55,11 +55,11 @@ namespace WebApplication1.Controllers
             Books temp = _context.BookList.FirstOrDefault(book => book.Code == id);
             if (temp != null)
             {
-                temp.Author=book.Author;
-                temp.Name=book.Name;
-                temp.Category=book.Category;
-                temp.IsBorrowed=book.IsBorrowed;
-                temp.DateOfPurchase=book.DateOfPurchase;
+                temp.Author = book.Author;
+                temp.Name = book.Name;
+                temp.Category = book.Category;
+                temp.IsBorrowed = book.IsBorrowed;
+                temp.DateOfPurchase = book.DateOfPurchase;
             }
             //Data.BookList.FirstOrDefault(book => book.Code == id).Author = book.Author;
             //Data.BookList.FirstOrDefault(book => book.Code == id).Name = book.Name;
@@ -74,7 +74,7 @@ namespace WebApplication1.Controllers
         {
             Books b = _context.BookList.FirstOrDefault(book => book.Code == id);
             if (b != null)
-                _context.BookList.Remove(b);         
+                _context.BookList.Remove(b);
         }
     }
 }

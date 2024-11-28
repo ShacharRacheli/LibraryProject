@@ -1,6 +1,7 @@
-﻿using WebApplication1.module;
+﻿using Library.Core.Models;
 
-namespace Library.Interface
+
+namespace Library.Core.Interface
 {
     public interface IDataContext
     {

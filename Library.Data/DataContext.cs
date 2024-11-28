@@ -1,10 +1,10 @@
-﻿using Library.Interface;
-using System.Xml.Linq;
-using WebApplication1.module;
+﻿
 
-namespace WebApplication1.Helper
+using Library.Core.Models;
+
+namespace Library.Core.Helper
 {
-    public class DataContext : IDataContext
+    public class DataContext 
     {
         public List<Subscribe> SubscribeList { get; set; }
         public List<Borrow> Borrows { get; set; }

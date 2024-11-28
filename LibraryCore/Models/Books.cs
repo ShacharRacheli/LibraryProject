@@ -1,4 +1,4 @@
-﻿namespace WebApplication1.module
+﻿namespace Library.Core.Models
 {
     public enum ECategories
     {

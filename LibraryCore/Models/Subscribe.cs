@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Text.Json.Serialization;
 
-namespace WebApplication1.module
+namespace Library.Core.Models
 {
     public class Subscribe
     {
