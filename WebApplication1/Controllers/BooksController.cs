@@ -28,9 +28,9 @@ namespace Library.API.Controllers
         [HttpGet("GetByCode")]
         public ActionResult Get([FromQuery] int code)
         {
-            Books book = _context.BookList.FirstOrDefault(book => book.Code == code);
-            if (book != null)
-                return Ok(book);
+            //Books book = _bookService.GetByCode(code);
+            if (_bookService.GetByCode(code))
+                return Ok();///?????
             return NotFound();
         }
         // GET api/<BooksController>/5
@@ -38,7 +38,7 @@ namespace Library.API.Controllers
         //  [HttpGet("{category}/{code}/{isBorrowed}")]
         public IEnumerable<Books> Get([FromQuery] ECategories category)
         {
-            return _context.BookList.Where(book => book.Category == category).ToList();
+            return _bookService.GetByCategory(category);
         }
 
 
@@ -46,36 +46,21 @@ namespace Library.API.Controllers
         [HttpPost]
         public void Post([FromBody] Books book)
         {
-            _context.BookList.Add(book);
+            _bookService.PostBook(book);
         }
 
         // PUT api/<BooksController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Books book)
         {
-            Books temp = _context.BookList.FirstOrDefault(book => book.Code == id);
-            if (temp != null)
-            {
-                temp.Author = book.Author;
-                temp.Name = book.Name;
-                temp.Category = book.Category;
-                temp.IsBorrowed = book.IsBorrowed;
-                temp.DateOfPurchase = book.DateOfPurchase;
-            }
-            //Data.BookList.FirstOrDefault(book => book.Code == id).Author = book.Author;
-            //Data.BookList.FirstOrDefault(book => book.Code == id).Name = book.Name;
-            //Data.BookList.FirstOrDefault(book => book.Code == id).Category = book.Category;
-            //Data.BookList.FirstOrDefault(book => book.Code == id).IsBorrowed = book.IsBorrowed;
-            //Data.BookList.FirstOrDefault(book => book.Code == id).DateOfPurchase = book.DateOfPurchase;
+            _bookService.PutBook(id, book);           
         }
 
         // DELETE api/<BooksController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            Books b = _context.BookList.FirstOrDefault(book => book.Code == id);
-            if (b != null)
-                _context.BookList.Remove(b);
+            _bookService.DeleteBook(id);
         }
     }
 }

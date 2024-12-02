@@ -11,7 +11,10 @@ namespace Library.Core.Services
     {
         List<Books> GetAll();
         bool GetByCode(int code);
-
-
+        List<Books> GetByCategory(ECategories category);
+        void PostBook(Books book);
+        void PutBook(int code, Books book);
+        void DeleteBook(int code);
+      
+        }
     }
-}

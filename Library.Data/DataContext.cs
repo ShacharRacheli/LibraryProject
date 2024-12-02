@@ -1,6 +1,5 @@
 ﻿using Library.Core.Models;
-
-namespace Library.Core.Helper
+namespace Library.Data
 {
     public class DataContext 
     {

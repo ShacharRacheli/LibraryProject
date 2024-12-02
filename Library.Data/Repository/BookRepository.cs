@@ -1,5 +1,4 @@
-﻿using Library.Core.Helper;
-using Library.Core.Models;
+﻿using Library.Core.Models;
 using Library.Core.Repositories;
 using System;
 using System.Collections.Generic;
@@ -20,8 +19,27 @@ namespace Library.Data.Repository
         {
             return _dataContext.BookList;
         }
-        public Books GetID(Books book) 
+        public Books GetBookWithID(int code) 
         { 
+            Books book=_dataContext.BookList.FirstOrDefault(x => x.Code == code);
+            return book;
+        }
+        public void PostABook(Books book)
+        { 
+        _dataContext.BookList.Add(book);
+        }
+        public void PutABook(int code,Books book)
+        {
+            Books temp=_dataContext.BookList.FirstOrDefault(x=>x.Code==code);
+            temp.Author = book.Author;
+            temp.Name = book.Name;
+            temp.Category = book.Category;
+            temp.IsBorrowed = book.IsBorrowed;
+            temp.DateOfPurchase = book.DateOfPurchase;
+        }
+        public void DeleteABook(int code) { 
+            Books temp=_dataContext.BookList.FirstOrDefault(x=>x.Code==code);
+            _dataContext.BookList.Remove(temp);
         }
     }
 }
