@@ -1,5 +1,6 @@
 ﻿using Library.Core.Interface;
 using Library.Core.Models;
+using Library.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,18 +12,18 @@ namespace Library.API.Controllers
 
     public class BooksController : ControllerBase
     {
-        private readonly IDataContext _context;
+        private readonly IBookService _bookService;
 
-        public BooksController(IDataContext dataContext)
+        public BooksController(IBookService bookService)
         {
-            _context = dataContext;
+            _bookService = bookService;
         }
 
         // GET: api/<BooksController>
         [HttpGet]
         public IEnumerable<Books> Get()
         {
-            return _context.BookList;
+            return _bookService.GetAll();
         }
         [HttpGet("GetByCode")]
         public ActionResult Get([FromQuery] int code)

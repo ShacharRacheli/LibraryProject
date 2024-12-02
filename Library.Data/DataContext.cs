@@ -1,6 +1,4 @@
-﻿
-
-using Library.Core.Models;
+﻿using Library.Core.Models;
 
 namespace Library.Core.Helper
 {
@@ -14,7 +12,8 @@ namespace Library.Core.Helper
         {
             SubscribeList = new List<Subscribe>();
             Borrows = new List<Borrow>();
-            BookList = new List<Books>();
+            BookList = new List<Books>()
+            { new Books { Name = "Dudi&Udi", Category = ECategories.children, IsBorrowed = false, Author = "Lion" } };
         }
         //public List<Subscribe> SubscribeList {  get; set; }
         // public static List<Subscribe> SubscribeList = new List<Subscribe>()

@@ -10,6 +10,8 @@ namespace Library.Core.Services
     public interface IBookService
     {
         List<Books> GetAll();
+        bool GetByCode(int code);
+
 
     }
 }
