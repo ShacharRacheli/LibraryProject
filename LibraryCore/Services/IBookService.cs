@@ -10,11 +10,11 @@ namespace Library.Core.Services
     public interface IBookService
     {
         List<Books> GetAll();
-        bool GetByCode(int code);
+        Books GetByCode(int code);
         List<Books> GetByCategory(ECategories category);
-        void PostBook(Books book);
-        void PutBook(int code, Books book);
-        void DeleteBook(int code);
+        bool PostBook(Books book);
+        bool PutBook(int code, Books book);
+        bool DeleteBook(int code);
       
         }
     }

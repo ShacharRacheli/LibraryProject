@@ -21,46 +21,58 @@ namespace Library.API.Controllers
 
         // GET: api/<BooksController>
         [HttpGet]
-        public IEnumerable<Books> Get()
+        public ActionResult Get()
         {
-            return _bookService.GetAll();
+            List<Books>books= _bookService.GetAll();
+            if(books.Any())
+                return Ok(books);
+            return NotFound("The list of books is empty");
         }
         [HttpGet("GetByCode")]
         public ActionResult Get([FromQuery] int code)
         {
-            //Books book = _bookService.GetByCode(code);
-            if (_bookService.GetByCode(code))
-                return Ok();///?????
-            return NotFound();
+            var book = _bookService.GetByCode(code);
+            if (book == null)
+                return NotFound();
+            return Ok(book);
         }
         // GET api/<BooksController>/5
         [HttpGet("ByCategory")]
         //  [HttpGet("{category}/{code}/{isBorrowed}")]
-        public IEnumerable<Books> Get([FromQuery] ECategories category)
-        {
-            return _bookService.GetByCategory(category);
+        public ActionResult Get([FromQuery] ECategories category)
+        {          
+            List<Books> books = _bookService.GetByCategory(category);
+            if (books.Any())
+                return Ok(books);
+            return NotFound("The list of books is empty");
         }
 
 
         // POST api/<BooksController>
         [HttpPost]
-        public void Post([FromBody] Books book)
+        public ActionResult Post([FromBody] Books book)
         {
-            _bookService.PostBook(book);
+           if(_bookService.PostBook(book))
+                return Ok(book);
+           return NotFound("The object was null");
         }
 
         // PUT api/<BooksController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Books book)
+        public ActionResult Put(int id, [FromBody] Books book)
         {
-            _bookService.PutBook(id, book);           
+            if(_bookService.PutBook(id, book))
+                return Ok();
+            return NotFound("There is no such a book to update");
         }
 
         // DELETE api/<BooksController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            _bookService.DeleteBook(id);
+            if(_bookService.DeleteBook(id))
+                return Ok();
+            return NotFound("There is no such a book to delete");
         }
     }
 }

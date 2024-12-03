@@ -1,5 +1,5 @@
-﻿using Library.Core.Interface;
-using Library.Core.Models;
+﻿using Library.Core.Models;
+using Library.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,66 +10,54 @@ namespace Library.API.Controllers
     [ApiController]
     public class BorrowController : ControllerBase
     {
-        private readonly IDataContext _context;
+        private readonly IBorrowService _borrowService;
 
-        public BorrowController(IDataContext dataContext)
+        public BorrowController(IBorrowService borrowService)
         {
-            _context = dataContext;
+            _borrowService = borrowService;
         }
 
 
         // GET: api/<BorrowController>
         [HttpGet]
-        public IEnumerable<Borrow> Get()
+        public ActionResult Get()
         {
-            return _context.Borrows;
+            List<Borrow> borrowList = _borrowService.GetAll();
+            if (borrowList.Any())
+                return Ok(borrowList);
+            return NotFound();
         }
-
         // GET api/<BorrowController>/5
-        [HttpGet("SameBook")]
-        public IEnumerable<Borrow> Get([FromQuery] int code)
+        [HttpGet("ListOfBorrowsByBookCode")]
+        public ActionResult Get([FromQuery] int code)
         {
-            return _context.Borrows.Where(bo => bo.Book.Code == code).ToList();
+            List<Borrow> borrows = _borrowService.SGetBorrowsByBookCode(code);
+            if (borrows.Any())
+                return Ok(borrows);
+            return NotFound();
         }
         [HttpGet("SameSubscriber")]
-        public IEnumerable<Borrow> Get([FromQuery] string id)
+        public ActionResult Get([FromQuery] string id)
         {
-            return _context.Borrows.Where(bo => bo.Subscriber.ID == id).ToList();
+            List<Borrow> borrows = _borrowService.SGetBorrowsSameSubscriber(id);
+            if (borrows.Any())
+                return Ok(borrows);
+            return NotFound();
         }
         // POST api/<BorrowController>
         [HttpPost]
         public void Post([FromQuery] int codeBook, [FromQuery] string idSubscriber)
         {
-            Books b = _context.BookList.FirstOrDefault(book => book.Code == codeBook);
-            Subscribe s = _context.SubscribeList.FirstOrDefault(sub => sub.ID == idSubscriber);
-            if (s != null && b != null)
-            {
-                if (b.IsBorrowed == false)
-                {
-                    b.IsBorrowed = true;
-                    Borrow borrow = new Borrow()
-                    {
-                        Book = b,
-                        Subscriber = s,
-                        BeginDate = DateTime.Today,
-                        IsReturned = false
-                    };
-                    _context.Borrows.Add(borrow);
-                }
-            }
+            _borrowService.SAddBorrow(codeBook, idSubscriber);
         }
 
         // PUT api/<BorrowController>/5
         [HttpPut("End_Of_Borrowing {id}")]//////////////
-        public void Put(int id)
+        public ActionResult Put(int code)
         {
-            Borrow borrow = _context.Borrows.FirstOrDefault(brw => brw.Id == id);
-            if (borrow != null)
-            {
-                borrow.EndDate = DateTime.Today;
-                borrow.IsReturned = true;
-                borrow.Book.IsBorrowed = false;
-            }
+            if (_borrowService.SUpdateEndOfBorrow(code))
+                return Ok();
+            return NotFound("There is not such borrowing code to update");
         }
         //[HttpPut("changeStatus {id}")]
         //public void Put(int id, [FromQuery] bool isBookBorrowed)
@@ -78,11 +66,11 @@ namespace Library.API.Controllers
         //}
         // DELETE api/<BorrowController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            Borrow b = _context.Borrows.FirstOrDefault(borrow => borrow.Id == id && borrow.Book.IsBorrowed == false);
-            if (b != null)
-                _context.Borrows.Remove(b);
+            if(_borrowService.SDeleteBorrow(id))
+return Ok();
+            return NotFound("There is not such borrowing code to delete");
         }
     }
 }

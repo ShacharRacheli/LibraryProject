@@ -20,36 +20,40 @@ namespace Library.Service
         {
             return _bookRepository.getlist();
         }
-        public bool GetByCode(int code)
+        public Books GetByCode(int code)
         {
-            Books book=_bookRepository.getlist().FirstOrDefault(x => x.Code == code);
-            if (book != null)
-            {
-                _bookRepository.GetBookWithID(code);
-                return true;
-            }
-            return false;
+            return _bookRepository.GetBookWithID(code);
         }
         public List<Books> GetByCategory(ECategories category)
         {
             return _bookRepository.getlist().Where(x => x.Category == category).ToList();
         }
-        public void PostBook(Books book)
+        public bool PostBook(Books book)
         {
-            _bookRepository.PostABook(book);
+            if (book != null)
+            {
+                _bookRepository.PostABook(book);
+                return true;
+            }
+            return false;
         }
-        public void PutBook(int code,Books book)
+        public bool PutBook(int code,Books book)
         {
             Books tmp=_bookRepository.getlist().FirstOrDefault(x => x.Code == code);
-            if (tmp != null) {
+            if (tmp != null) 
+            {
                 _bookRepository.PutABook(code, book);
+                return true;
             }
+            return false;
         }
-        public void DeleteBook(int code) {
+        public bool DeleteBook(int code) {
             Books book = _bookRepository.getlist().FirstOrDefault(x => x.Code == code);
             if (book != null) { 
             _bookRepository.DeleteABook(code);
+                return true;
             }
+            return false;
         }
     }
 }

@@ -14,8 +14,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<ISubscribeService, SubscribeService>();
+builder.Services.AddScoped<ISubscribeRepository, SubscribeRepository>();
+builder.Services.AddScoped<IBorrowService, BorrowService>();
+builder.Services.AddScoped<IBorrowRepository, BorrowRepository>();
 builder.Services.AddSingleton<DataContext>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

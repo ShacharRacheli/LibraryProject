@@ -1,5 +1,6 @@
 ﻿using Library.Core.Interface;
 using Library.Core.Models;
+using Library.Core.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,68 +12,64 @@ namespace Library.API.Controllers
     [ApiController]
     public class SubscriberController : ControllerBase
     {
-        private readonly IDataContext _context;
-
-        public SubscriberController(IDataContext context)
+        private readonly ISubscribeService _subscribeService;
+        public SubscriberController(ISubscribeService subscribeService)
         {
-            _context = context;
+            _subscribeService = subscribeService;
         }
 
         // GET: api/<SubscriberController>
         [HttpGet]
-        public IEnumerable<Subscribe> Get()
+        public ActionResult Get()
         {
-            return _context.SubscribeList;
+            List<Subscribe> tmp= _subscribeService.GetList();
+            if(tmp.Any())
+                return Ok(tmp);
+            return NotFound();
         }
 
         // GET api/<SubscriberController>/5
         [HttpGet("{id}")]
         public ActionResult Get([FromQuery] string id)
         {
-            Subscribe subs = _context.SubscribeList.FirstOrDefault(sub => sub.ID == id);
-            if (subs != null)
-            {
-                return Ok(subs);
-            }
-            return NotFound();
+            var subscribe = _subscribeService.SGetByID(id);
+            if (subscribe == null)
+                return NotFound();
+            return Ok(subscribe);
         }
         [HttpGet("ListIsActive")]
-        public IEnumerable<Subscribe> Get([FromQuery] bool isActive)
+        public ActionResult Get([FromQuery] bool isActive)
         {
-            return _context.SubscribeList.Where(sub => sub.IsActive == isActive).ToList();
+            List<Subscribe> list =_subscribeService.SGetListActive(isActive);
+            if(list.Any())
+                return Ok(list);
+            return NotFound();
         }
         // POST api/<SubscriberController>
         [HttpPost]
-        public void Post([FromBody] Subscribe value)
+        public ActionResult Post([FromBody] Subscribe value)
         {
-            _context.SubscribeList.Add(value);
+            if(_subscribeService.SPost(value))
+                return Ok();
+            return NotFound("The subscribe object was null");
         }
 
         // PUT api/<SubscriberController>/5
         [HttpPut("{id}")]
-        public void Put(string id, [FromBody] Subscribe value)
+        public ActionResult Put(string id, [FromBody] Subscribe value)
         {
-            Subscribe temp = _context.SubscribeList.FirstOrDefault(sub => sub.ID == id);
-            if (temp != null)
-            {
-                temp.Name = value.Name;
-                temp.IsActive = value.IsActive;
-                temp.Address = value.Address;
-                temp.Phone = value.Phone;
-            }
-            //Data.SubscribeList.FirstOrDefault(sub=>sub.ID.Equals(id)).Name = value.Name;
-            //Data.SubscribeList.FirstOrDefault(sub=>sub.ID.Equals(id)).Address = value.Address;
-            //Data.SubscribeList.FirstOrDefault(sub=>sub.ID.Equals(id)).Phone = value.Phone;
-            //Data.SubscribeList.FirstOrDefault(sub=>sub.ID.Equals(id)).IsActive = value.IsActive;
+            if(_subscribeService.SPut(id, value))
+                return Ok();
+            return NotFound("There is not such subscribe to update");
         }
 
         // DELETE api/<SubscriberController>/5
         [HttpDelete("{id}")]
-        public void Delete(string id)
+        public ActionResult Delete(string id)
         {
-            Subscribe s = _context.SubscribeList.FirstOrDefault(sub => sub.ID == id);
-            if (s != null)
-                _context.SubscribeList.Remove(s);
+            if(_subscribeService.SDelete(id))
+                return Ok();
+            return NotFound("There is not such subscribe to delete");
         }
     }
 }

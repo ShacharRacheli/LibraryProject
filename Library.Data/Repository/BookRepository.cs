@@ -21,8 +21,7 @@ namespace Library.Data.Repository
         }
         public Books GetBookWithID(int code) 
         { 
-            Books book=_dataContext.BookList.FirstOrDefault(x => x.Code == code);
-            return book;
+            return _dataContext.GetBookByCode(code);
         }
         public void PostABook(Books book)
         { 
@@ -30,7 +29,7 @@ namespace Library.Data.Repository
         }
         public void PutABook(int code,Books book)
         {
-            Books temp=_dataContext.BookList.FirstOrDefault(x=>x.Code==code);
+            Books temp=_dataContext.GetBookByCode(code);
             temp.Author = book.Author;
             temp.Name = book.Name;
             temp.Category = book.Category;
@@ -38,7 +37,7 @@ namespace Library.Data.Repository
             temp.DateOfPurchase = book.DateOfPurchase;
         }
         public void DeleteABook(int code) { 
-            Books temp=_dataContext.BookList.FirstOrDefault(x=>x.Code==code);
+            Books temp=_dataContext.GetBookByCode(code);
             _dataContext.BookList.Remove(temp);
         }
     }

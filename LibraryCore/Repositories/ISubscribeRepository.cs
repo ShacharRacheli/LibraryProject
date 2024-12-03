@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,12 @@ namespace Library.Core.Repositories
 {
     public interface ISubscribeRepository
     {
+        List<Subscribe> GetAll();
+        Subscribe RGetByID(string id);
+         void RPost(Subscribe subscribe);
+         void RPut(string id, Subscribe subscribe);
+         void RDelete(string id);
+
+
     }
 }
