@@ -39,11 +39,13 @@ namespace Library.API.Controllers
         // GET api/<BooksController>/5
         [HttpGet("ByCategory")]
         //  [HttpGet("{category}/{code}/{isBorrowed}")]
-        public ActionResult Get([FromQuery] ECategories category)
+        public ActionResult<List<Books>> Get([FromQuery] ECategories category)
         {          
             List<Books> books = _bookService.GetByCategory(category);
+            
             if (books.Any())
                 return Ok(books);
+            
             return NotFound("The list of books is empty");
         }
 

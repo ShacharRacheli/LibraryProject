@@ -17,11 +17,11 @@ namespace Library.Data.Repository
         }
         public List<Books> getlist()
         {
-            return _dataContext.BookList;
+            return _dataContext.BookList.ToList();
         }
         public Books GetBookWithID(int code) 
         { 
-            return _dataContext.GetBookByCode(code);
+            return _dataContext.BookList.FirstOrDefault(x => x.Code == code);
         }
         public void PostABook(Books book)
         { 
@@ -29,15 +29,15 @@ namespace Library.Data.Repository
         }
         public void PutABook(int code,Books book)
         {
-            Books temp=_dataContext.GetBookByCode(code);
+            Books? temp=_dataContext.BookList.FirstOrDefault(x => x.Code == code);
             temp.Author = book.Author;
             temp.Name = book.Name;
             temp.Category = book.Category;
             temp.IsBorrowed = book.IsBorrowed;
             temp.DateOfPurchase = book.DateOfPurchase;
         }
-        public void DeleteABook(int code) { 
-            Books temp=_dataContext.GetBookByCode(code);
+        public void DeleteABook(int code) {
+            Books? temp =_dataContext.BookList.FirstOrDefault(x => x.Code == code);
             _dataContext.BookList.Remove(temp);
         }
     }

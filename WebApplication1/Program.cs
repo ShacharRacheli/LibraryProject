@@ -19,6 +19,7 @@ builder.Services.AddScoped<ISubscribeRepository, SubscribeRepository>();
 builder.Services.AddScoped<IBorrowService, BorrowService>();
 builder.Services.AddScoped<IBorrowRepository, BorrowRepository>();
 builder.Services.AddSingleton<DataContext>();
+builder.Services.AddDbContext<DataContext>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

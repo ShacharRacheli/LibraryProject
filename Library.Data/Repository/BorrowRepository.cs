@@ -17,12 +17,12 @@ namespace Library.Data.Repository
         }
         public List<Borrow> GetList() 
         {
-            return _dataContext.BorrowList;
+            return _dataContext.BorrowList.ToList();
         }
         public void RAddBorrow(int code,string id)
         {
-            Books book=_dataContext.GetBookByCode(code);
-            Subscribe subscribe=_dataContext.GetSubscribeByID(id);
+            Books? book=_dataContext.BookList.FirstOrDefault(x => x.Code == code);
+            Subscribe? subscribe=_dataContext.SubscribeList.FirstOrDefault(x => x.SubscribeID == id);
             if (subscribe != null && book != null)
             {
                 if (book.IsBorrowed==false)
@@ -42,14 +42,14 @@ namespace Library.Data.Repository
         }
         public void RUpdateEndOfBorrow(int code)
         {
-            Borrow borrow = _dataContext.GetBorrowByCode(code);
+            Borrow? borrow = _dataContext.BorrowList.FirstOrDefault(x => x.Code == code);
             borrow.EndDate = DateTime.Today;
             borrow.IsReturned = true;
             borrow.Book.IsBorrowed = false;
         }
         public void RDeleteBorrow(int code)
         {
-            Borrow borrow = _dataContext.GetBorrowByCode(code);
+            Borrow? borrow = _dataContext.BorrowList.FirstOrDefault(x => x.Code == code);
             _dataContext.BorrowList.Remove(borrow);
         }
     }

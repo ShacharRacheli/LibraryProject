@@ -1,9 +1,13 @@
-﻿namespace Library.Core.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Library.Core.Models
 {
     public class Borrow
     {
-        static int id = 10;
-        public int Code { get; } = id++;
+        static int code = 100;
+        public int Id { get; set; }
+        [Key]
+        public int Code { get; } = code++;
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }
         public Subscribe Subscriber { get; set; }

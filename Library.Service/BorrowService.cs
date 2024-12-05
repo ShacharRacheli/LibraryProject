@@ -26,7 +26,7 @@ namespace Library.Service
         }
         public List<Borrow>SGetBorrowsSameSubscriber(string subscriberCode)
         {
-            return _borrowRepository.GetList().Where(x=>x.Subscriber.ID==subscriberCode).ToList();
+            return _borrowRepository.GetList().Where(x=>x.Subscriber.SubscribeID==subscriberCode).ToList();
         }
         public void SAddBorrow(int bookCode, string subscriberCode)
         { 
@@ -34,7 +34,7 @@ namespace Library.Service
         }
         public bool SUpdateEndOfBorrow(int code)
         {
-            Borrow borrow=_borrowRepository.GetList().FirstOrDefault(x=>x.Code==code);
+            Borrow? borrow=_borrowRepository.GetList().FirstOrDefault(x=>x.Code==code);
             if (borrow != null) { 
                 _borrowRepository.RUpdateEndOfBorrow(code);
                 return true;
@@ -43,7 +43,7 @@ namespace Library.Service
         }
         public bool SDeleteBorrow(int bookCode) 
         { 
-         Borrow borrow=_borrowRepository.GetList().FirstOrDefault(x=> x.Code==bookCode&& x.Book.IsBorrowed == false);
+         Borrow? borrow=_borrowRepository.GetList().FirstOrDefault(x=> x.Code==bookCode&& x.Book.IsBorrowed == false);
             if (borrow != null) { 
                 _borrowRepository.RDeleteBorrow(bookCode);
             return true;

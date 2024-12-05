@@ -1,11 +1,14 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Library.Core.Models
 {
     public class Subscribe
     {
-        public string ID { get; set; }
+        public int Id { get; set; }
+        [Key]
+        public string SubscribeID { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }

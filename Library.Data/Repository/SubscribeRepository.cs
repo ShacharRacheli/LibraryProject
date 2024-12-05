@@ -17,11 +17,11 @@ namespace Library.Data.Repository
         }
         public List<Subscribe> GetAll()
         {
-            return _dataContext.SubscribeList;
+            return _dataContext.SubscribeList.ToList();
         }
         public Subscribe RGetByID(string id)
         {
-            return _dataContext.GetSubscribeByID(id);
+            return _dataContext.SubscribeList.FirstOrDefault(x => x.SubscribeID == id);
         }
         public void RPost(Subscribe subscribe)
         {
@@ -29,7 +29,7 @@ namespace Library.Data.Repository
         }
         public void RPut(string id, Subscribe subscribe)
         {
-            Subscribe temp = _dataContext.GetSubscribeByID(id);
+            Subscribe? temp = _dataContext.SubscribeList.FirstOrDefault(x => x.SubscribeID == id);
             if (temp != null)
             {
                 temp.Name = subscribe.Name;
@@ -40,7 +40,7 @@ namespace Library.Data.Repository
         }
         public void RDelete(string id)
         {
-            Subscribe temp = _dataContext.GetSubscribeByID(id);
+            Subscribe? temp = _dataContext.SubscribeList.FirstOrDefault(x => x.SubscribeID == id);
             _dataContext.SubscribeList.Remove(temp);
         }
     }

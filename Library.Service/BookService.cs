@@ -39,7 +39,7 @@ namespace Library.Service
         }
         public bool PutBook(int code,Books book)
         {
-            Books tmp=_bookRepository.getlist().FirstOrDefault(x => x.Code == code);
+            Books? tmp = _bookRepository.getlist().FirstOrDefault(x => x.Code == code);
             if (tmp != null) 
             {
                 _bookRepository.PutABook(code, book);
@@ -48,7 +48,7 @@ namespace Library.Service
             return false;
         }
         public bool DeleteBook(int code) {
-            Books book = _bookRepository.getlist().FirstOrDefault(x => x.Code == code);
+            Books? book = _bookRepository.getlist().FirstOrDefault(x => x.Code == code);
             if (book != null) { 
             _bookRepository.DeleteABook(code);
                 return true;
