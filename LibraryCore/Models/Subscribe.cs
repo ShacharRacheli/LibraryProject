@@ -6,8 +6,8 @@ namespace Library.Core.Models
 {
     public class Subscribe
     {
-        public int Id { get; set; }
         [Key]
+        public int Id { get; set; }
         public string SubscribeID { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }

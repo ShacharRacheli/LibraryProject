@@ -1,5 +1,6 @@
 ﻿using Library.Core.Models;
 using Library.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Library.Data.Repository
         }
         public List<Borrow> GetList() 
         {
-            return _dataContext.BorrowList.ToList();
+            return _dataContext.BorrowList.Include(x=>x.Book).Include(s=>s.Subscriber).ToList();
         }
         public void RAddBorrow(int code,string id)
         {
@@ -39,6 +40,7 @@ namespace Library.Data.Repository
                     _dataContext.BorrowList.Add(borrow);
                 }
             }
+            _dataContext.SaveChanges();
         }
         public void RUpdateEndOfBorrow(int code)
         {
@@ -46,11 +48,13 @@ namespace Library.Data.Repository
             borrow.EndDate = DateTime.Today;
             borrow.IsReturned = true;
             borrow.Book.IsBorrowed = false;
+            _dataContext.SaveChanges();
         }
         public void RDeleteBorrow(int code)
         {
             Borrow? borrow = _dataContext.BorrowList.FirstOrDefault(x => x.Code == code);
             _dataContext.BorrowList.Remove(borrow);
+            _dataContext.SaveChanges();
         }
     }
 }

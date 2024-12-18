@@ -26,6 +26,7 @@ namespace Library.Data.Repository
         public void PostABook(Books book)
         { 
         _dataContext.BookList.Add(book);
+            _dataContext.SaveChanges();
         }
         public void PutABook(int code,Books book)
         {
@@ -35,10 +36,12 @@ namespace Library.Data.Repository
             temp.Category = book.Category;
             temp.IsBorrowed = book.IsBorrowed;
             temp.DateOfPurchase = book.DateOfPurchase;
+            _dataContext.SaveChanges();
         }
         public void DeleteABook(int code) {
             Books? temp =_dataContext.BookList.FirstOrDefault(x => x.Code == code);
             _dataContext.BookList.Remove(temp);
+            _dataContext.SaveChanges();
         }
     }
 }

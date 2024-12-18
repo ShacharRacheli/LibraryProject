@@ -22,7 +22,10 @@ namespace Library.Service
         }
         public Books GetByCode(int code)
         {
+            Books book=_bookRepository.getlist().FirstOrDefault(x => x.Code == code);
+            if (book != null) 
             return _bookRepository.GetBookWithID(code);
+            return null;
         }
         public List<Books> GetByCategory(ECategories category)
         {

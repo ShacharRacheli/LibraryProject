@@ -9,8 +9,8 @@ namespace Library.Core.Models
     public class Books
     {
         public static int code = 1000;
-        public int Id {  get; set; }
         [Key]
+        public int Id {  get; set; }
         public int Code { get; } = code++;
         public string Name { get; set; }
         public string Author { get; set; }

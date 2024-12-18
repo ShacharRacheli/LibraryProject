@@ -23,9 +23,11 @@ namespace Library.Data.Repository
         {
             return _dataContext.SubscribeList.FirstOrDefault(x => x.SubscribeID == id);
         }
-        public void RPost(Subscribe subscribe)
+        public bool RPost(Subscribe subscribe)
         {
             _dataContext.SubscribeList.Add(subscribe);
+            _dataContext.SaveChanges();
+            return true;
         }
         public void RPut(string id, Subscribe subscribe)
         {
@@ -37,11 +39,13 @@ namespace Library.Data.Repository
                 temp.Address = subscribe.Address;
                 temp.Phone = subscribe.Phone;
             }
+            _dataContext.SaveChanges();
         }
         public void RDelete(string id)
         {
             Subscribe? temp = _dataContext.SubscribeList.FirstOrDefault(x => x.SubscribeID == id);
-            _dataContext.SubscribeList.Remove(temp);
+           temp.IsActive=false;
+            _dataContext.SaveChanges();
         }
     }
 }

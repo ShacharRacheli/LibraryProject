@@ -5,8 +5,8 @@ namespace Library.Core.Models
     public class Borrow
     {
         static int code = 100;
-        public int Id { get; set; }
         [Key]
+        public int Id { get; set; }
         public int Code { get; } = code++;
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }

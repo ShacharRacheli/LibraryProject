@@ -11,7 +11,7 @@ namespace Library.Core.Repositories
     {
         List<Subscribe> GetAll();
         Subscribe RGetByID(string id);
-         void RPost(Subscribe subscribe);
+         bool RPost(Subscribe subscribe);
          void RPut(string id, Subscribe subscribe);
          void RDelete(string id);
 

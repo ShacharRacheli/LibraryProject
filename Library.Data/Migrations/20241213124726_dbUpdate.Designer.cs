@@ -4,6 +4,7 @@ using Library.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241213124726_dbUpdate")]
+    partial class dbUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,25 +75,23 @@ namespace Library.Data.Migrations
                     b.Property<bool>("IsReturned")
                         .HasColumnType("bit");
 
-                    b.Property<int>("SubscriberId")
-                        .HasColumnType("int");
+                    b.Property<string>("SubscriberSubscribeID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
 
-                    b.HasIndex("SubscriberId");
+                    b.HasIndex("SubscriberSubscribeID");
 
                     b.ToTable("BorrowList");
                 });
 
             modelBuilder.Entity("Library.Core.Models.Subscribe", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("SubscribeID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -98,6 +99,9 @@ namespace Library.Data.Migrations
 
                     b.Property<DateTime>("DateOfJoining")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -110,11 +114,7 @@ namespace Library.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SubscribeID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
+                    b.HasKey("SubscribeID");
 
                     b.ToTable("SubscribeList");
                 });
@@ -129,7 +129,7 @@ namespace Library.Data.Migrations
 
                     b.HasOne("Library.Core.Models.Subscribe", "Subscriber")
                         .WithMany()
-                        .HasForeignKey("SubscriberId")
+                        .HasForeignKey("SubscriberSubscribeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

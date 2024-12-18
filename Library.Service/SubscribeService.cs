@@ -34,8 +34,8 @@ namespace Library.Service
         {
             if (subscribe != null)
             {
-                _subscribeRepository.RPost(subscribe);
-                return true;
+               return _subscribeRepository.RPost(subscribe);
+                //return true;
             }
             return false;
         }
